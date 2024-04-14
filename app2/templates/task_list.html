@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+</head>
+<body>
+     <h2>Create New Task</h2>
+     <form action="{% url "create_task" %}" method="post">
+         {% csrf_token %}
+         <label for="title">Title:</label><br>
+         <input type="text" id="title" name="title"><br>
+         <label for="description">Description:</label><br>
+         <textarea id="description" name="description"></textarea><br>
+         <label for="due_date">Due Date:</label><br>
+         <input type="date" id="due_date" name="due_date"><br>
+         <!-- Dropdown list to select user to assign the task -->
+         <label for="assigned_user">Assign Task To:</label><br>
+         <select id="assigned_user" name="assigned_user">
+             {% for user in users %}
+                 <option value="{{ user.id }}">{{ user.name }}</option>
+             {% endfor %}
+         </select><br>
+         
+         <button type="submit">Create Task</button>
+     </form>
+    <h1>Task List</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <h2>{{ task.title }}</h2>
+                <p>Description: {{ task.description }}</p>
+                <h3>Assigned Users:</h3>
+                <ul>
+                {% for user in task.user.all %}
+                    <li>{{ user.name }}</li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+   
+</body>
+</html>
